@@ -13,6 +13,10 @@ import '../../../../features/notes/presentation/screens/notes_screen.dart';
 import '../../../../features/calculator/presentation/screens/calculator_screen.dart';
 import '../../../../features/converter/presentation/screens/converter_screen.dart';
 import '../../../../features/settings/presentation/screens/settings_screen.dart';
+import '../../../../features/settings/presentation/screens/webview_screen.dart';
+import '../../../../features/activity_history/presentation/screens/activity_history_screen.dart';
+import '../../../../features/how_it_works/presentation/screens/how_it_works_screen.dart';
+import '../../../../core/constants/app_constants.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -40,6 +44,18 @@ class AppRouter {
               ),
               state: state,
             ),
+            routes: [
+              GoRoute(
+                path: 'privacy-policy',
+                pageBuilder: (context, state) => PageTransitions.slideTransition(
+                  child: const WebViewScreen(
+                    url: AppConstants.privacyPolicyUrl,
+                    title: 'Privacy Policy & Terms of Use',
+                  ),
+                  state: state,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -69,6 +85,26 @@ class AppRouter {
           child: BlocProviders.wrapWithProviders(
             context: context,
             child: const ConverterScreen(),
+          ),
+          state: state,
+        ),
+      ),
+      GoRoute(
+        path: NavigationConstants.activityHistory,
+        pageBuilder: (context, state) => PageTransitions.slideTransition(
+          child: BlocProviders.wrapWithProviders(
+            context: context,
+            child: const ActivityHistoryScreen(),
+          ),
+          state: state,
+        ),
+      ),
+      GoRoute(
+        path: NavigationConstants.howItWorks,
+        pageBuilder: (context, state) => PageTransitions.slideTransition(
+          child: BlocProviders.wrapWithProviders(
+            context: context,
+            child: const HowItWorksScreen(),
           ),
           state: state,
         ),

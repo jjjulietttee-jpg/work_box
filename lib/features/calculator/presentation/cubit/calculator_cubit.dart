@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/services/calculator_service.dart';
+import '../../../../core/services/activity_tracker_service.dart';
 
 part 'calculator_state.dart';
 
@@ -105,6 +106,9 @@ class CalculatorCubit extends Cubit<CalculatorState> {
         result: formattedResult,
         hasError: false,
       ));
+      
+      // Track calculation
+      ActivityTrackerService.trackCalculation(expression, formattedResult);
     }
   }
 

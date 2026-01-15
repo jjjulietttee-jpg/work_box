@@ -6,7 +6,14 @@ import 'bottom_navigation_ui_constants.dart';
 class NavigationColors {
   NavigationColors._();
 
-  static const Color selectedIconColor = AppColors.accentPrimary;
+  static Color getSelectedIconColor(bool isDark) {
+    if (isDark) {
+      // Светлее в темной теме для лучшей видимости
+      return const Color.fromARGB(255, 241, 243, 252); // Более светлый оттенок accentPrimary
+    }
+    return const Color.fromARGB(255, 246, 248, 255);
+  }
+
   static const Color unselectedIconColor = AppColors.textSecondary;
 
   static Color getSelectedGlowColor() => Colors.grey.withValues(

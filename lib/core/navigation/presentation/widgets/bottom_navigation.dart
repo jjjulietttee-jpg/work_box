@@ -87,6 +87,7 @@ class CustomBottomNavigation extends StatelessWidget {
                           isDragging: state.isDragging,
                           targetIndex: state.targetIndex,
                           dragPosition: state.dragPosition,
+                          isDark: state.isDark,
                           cubit: cubit,
                         ),
                       ),
@@ -107,6 +108,7 @@ class _NavigationContent extends StatelessWidget {
   final bool isDragging;
   final int? targetIndex;
   final Offset? dragPosition;
+  final bool isDark;
   final NavigationCubit cubit;
 
   const _NavigationContent({
@@ -114,6 +116,7 @@ class _NavigationContent extends StatelessWidget {
     required this.isDragging,
     required this.targetIndex,
     required this.dragPosition,
+    required this.isDark,
     required this.cubit,
   });
 
@@ -166,6 +169,7 @@ class _NavigationContent extends StatelessWidget {
                       item: item,
                       isSelected: isSelected,
                       showIndicator: showIndicator,
+                      isDark: isDark,
                       onTap: () => cubit.navigateToRoute(context, item.route),
                     );
                   },
@@ -181,19 +185,21 @@ class _NavigationItem extends StatelessWidget {
   final NavigationItem item;
   final bool isSelected;
   final bool showIndicator;
+  final bool isDark;
   final VoidCallback onTap;
 
   const _NavigationItem({
     required this.item,
     required this.isSelected,
     required this.showIndicator,
+    required this.isDark,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final iconColor = isSelected
-        ? NavigationColors.selectedIconColor
+        ? NavigationColors.getSelectedIconColor(isDark)
         : NavigationColors.unselectedIconColor;
 
     return GestureDetector(

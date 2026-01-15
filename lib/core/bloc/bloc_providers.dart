@@ -19,6 +19,13 @@ import '../../features/notes/domain/usecases/search_notes.dart';
 import '../../features/calculator/presentation/cubit/calculator_cubit.dart';
 import '../../features/converter/presentation/cubit/converter_cubit.dart';
 import '../../features/settings/presentation/cubit/settings_cubit.dart';
+import '../../features/activity_history/domain/repositories/activity_repository.dart';
+import '../../features/activity_history/data/repositories/activity_repository_impl.dart';
+import '../../features/activity_history/data/datasources/activity_local_datasource.dart';
+import '../../features/activity_history/presentation/cubit/activity_history_cubit.dart';
+import '../../features/activity_history/domain/usecases/get_activity_history.dart';
+import '../../features/activity_history/domain/usecases/add_activity.dart';
+import '../../features/activity_history/domain/usecases/clear_activity_history.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -35,6 +42,8 @@ class BlocProviders {
     _registerCalculatorCubit();
     _registerConverterCubit();
     _registerSettingsCubit();
+    _registerActivityHistoryRepositories();
+    _registerActivityHistoryCubit();
   }
 
   static void _registerTalker() {
@@ -94,6 +103,26 @@ class BlocProviders {
     getIt.registerLazySingleton<SettingsCubit>(() => SettingsCubit());
   }
 
+  static void _registerActivityHistoryRepositories() {
+    getIt.registerLazySingleton<ActivityLocalDataSource>(
+      () => ActivityLocalDataSourceImpl(getIt<SharedPreferences>()),
+    );
+    
+    getIt.registerLazySingleton<ActivityRepository>(
+      () => ActivityRepositoryImpl(getIt<ActivityLocalDataSource>()),
+    );
+  }
+
+  static void _registerActivityHistoryCubit() {
+    getIt.registerFactory<ActivityHistoryCubit>(
+      () => ActivityHistoryCubit(
+        getActivityHistory: GetActivityHistory(getIt<ActivityRepository>()),
+        addActivity: AddActivity(getIt<ActivityRepository>()),
+        clearActivityHistory: ClearActivityHistory(getIt<ActivityRepository>()),
+      ),
+    );
+  }
+
   static Widget wrapWithProviders({
     required BuildContext context,
     required Widget child,
@@ -129,6 +158,9 @@ class BlocProviders {
         ),
         BlocProvider<SettingsCubit>.value(
           value: getIt<SettingsCubit>(),
+        ),
+        BlocProvider<ActivityHistoryCubit>(
+          create: (_) => getIt<ActivityHistoryCubit>(),
         ),
       ],
       child: child,

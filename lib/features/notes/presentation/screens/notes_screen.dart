@@ -5,6 +5,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/theme_extensions.dart';
 import '../../../../core/shared/widgets/custom_app_bar.dart';
 import '../../../../core/shared/widgets/confirmation_dialog.dart';
+import '../../../../core/services/activity_tracker_service.dart';
 import '../cubit/notes_cubit.dart';
 import '../widgets/note_item.dart';
 import '../widgets/create_note_bottom_sheet.dart';
@@ -126,6 +127,7 @@ class _NotesScreenState extends State<NotesScreen> {
       onCreateNote: ({required String title, required String content}) {
         if (note == null) {
           context.read<NotesCubit>().createNote(title, content);
+          ActivityTrackerService.trackEntityCreated('Note', entityName: title);
         } else {
           context.read<NotesCubit>().updateNote(note, title, content);
         }

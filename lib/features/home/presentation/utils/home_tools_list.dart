@@ -21,6 +21,18 @@ class HomeToolsList {
       route: NavigationConstants.converter,
     ),
     ToolItem(
+      title: 'Activity History',
+      icon: Icons.history,
+      route: NavigationConstants.activityHistory,
+      useGo: true,
+    ),
+    ToolItem(
+      title: 'How It Works',
+      icon: Icons.info_outline,
+      route: NavigationConstants.howItWorks,
+      useGo: true,
+    ),
+    ToolItem(
       title: 'Settings',
       icon: Icons.settings,
       route: NavigationConstants.settings,
